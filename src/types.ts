@@ -4,9 +4,9 @@
 export type LinkedPackageMap = Record<string, string>
 
 /**
- * Options for the symlink watcher plugin
+ * Options for the vite watcher plugin
  */
-export interface SymlinkWatcherOptions {
+export interface ViteWatcherOptions {
   /**
    * Map of package names to their local filesystem paths
    *

@@ -1,9 +1,9 @@
-# nice-vite-symlink-watcher
+# nice-vite-watcher
 
-**Hot-reload symlinked npm packages in Vite** — automatically detect changes in linked package dist folders and trigger browser reload.
+**Hot-reload linked npm packages in Vite** — automatically detect changes in linked package dist folders and trigger browser reload.
 
-[![npm version](https://img.shields.io/npm/v/nice-vite-symlink-watcher.svg)](https://www.npmjs.com/package/nice-vite-symlink-watcher)
-[![license](https://img.shields.io/npm/l/nice-vite-symlink-watcher.svg)](https://github.com/niceprototypes/nice-vite-symlink-watcher/blob/main/LICENSE)
+[![npm version](https://img.shields.io/npm/v/nice-vite-watcher.svg)](https://www.npmjs.com/package/nice-vite-watcher)
+[![license](https://img.shields.io/npm/l/nice-vite-watcher.svg)](https://github.com/niceprototypes/nice-vite-watcher/blob/main/LICENSE)
 
 ## The Problem
 
@@ -34,7 +34,7 @@ It works alongside source aliases — use source aliases for simple packages (tr
 ## Installation
 
 ```bash
-npm install -D nice-vite-symlink-watcher
+npm install -D nice-vite-watcher
 ```
 
 ## Quick Start
@@ -42,11 +42,11 @@ npm install -D nice-vite-symlink-watcher
 ```typescript
 // vite.config.ts
 import { defineConfig } from 'vite'
-import { symlinkWatcher } from 'nice-vite-symlink-watcher'
+import { viteWatcher } from 'nice-vite-watcher'
 
 export default defineConfig({
   plugins: [
-    symlinkWatcher({
+    viteWatcher({
       packages: {
         'my-ui-library': '/Users/me/code/my-ui-library',
         'my-icon-library': '/Users/me/code/my-icon-library',
@@ -64,7 +64,7 @@ For the best development experience, use **source aliases** for packages without
 ```typescript
 // vite.config.ts
 import { defineConfig } from 'vite'
-import { symlinkWatcher, getSourceAliases } from 'nice-vite-symlink-watcher'
+import { viteWatcher, getSourceAliases } from 'nice-vite-watcher'
 
 // All your linked packages
 const linkedPackages = {
@@ -80,7 +80,7 @@ const sourceAliasable = ['my-ui-library', 'my-utils']
 export default defineConfig({
   plugins: [
     // Watch dist folders for ALL packages (catches non-aliased ones)
-    symlinkWatcher({
+    viteWatcher({
       packages: linkedPackages,
       verbose: true,
     }),
@@ -107,12 +107,12 @@ export default defineConfig({
 
 ## API
 
-### `symlinkWatcher(options)`
+### `viteWatcher(options)`
 
 Creates the Vite plugin.
 
 ```typescript
-interface SymlinkWatcherOptions {
+interface ViteWatcherOptions {
   /**
    * Map of package names to their local filesystem paths
    */
@@ -126,7 +126,7 @@ interface SymlinkWatcherOptions {
   /**
    * Whether to log when changes are detected (default: false)
    * Logs include the number of file changes batched and modules invalidated:
-   * [symlink-watcher] my-package changed (12 files), invalidated 3 modules
+   * [vite-watcher] my-package changed (12 files), invalidated 3 modules
    */
   verbose?: boolean
 
@@ -177,14 +177,14 @@ Works great with Storybook's Vite builder:
 
 ```typescript
 // .storybook/main.ts
-import { symlinkWatcher, getSourceAliases } from 'nice-vite-symlink-watcher'
+import { viteWatcher, getSourceAliases } from 'nice-vite-watcher'
 
 const config: StorybookConfig = {
   // ...
   viteFinal: async (config) => {
     config.plugins = [
       ...(config.plugins || []),
-      symlinkWatcher({
+      viteWatcher({
         packages: linkedPackages,
         verbose: true,
       }),

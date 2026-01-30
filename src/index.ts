@@ -1,7 +1,7 @@
-export type { LinkedPackageMap, SymlinkWatcherOptions } from "./types"
-export { getSourceAliases, symlinkWatcher } from "./services"
+export type { LinkedPackageMap, ViteWatcherOptions } from "./types"
+export { getSourceAliases, viteWatcher } from "./services"
 
-import { symlinkWatcher } from "./services"
+import { viteWatcher } from "./services"
 
 // Default export for convenience
-export default symlinkWatcher
+export default viteWatcher

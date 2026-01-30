@@ -3,7 +3,7 @@ import { join } from "path"
 import { existsSync } from "fs"
 import type {
   LinkedPackageMap,
-  SymlinkWatcherOptions,
+  ViteWatcherOptions,
   PackageInfo,
   KeyedDebouncer,
 } from "./types"
@@ -22,7 +22,7 @@ import type {
  *
  * @example
  * ```typescript
- * import { getSourceAliases } from 'vite-plugin-symlink-watcher'
+ * import { getSourceAliases } from 'nice-vite-watcher'
  *
  * const packages = {
  *   'my-ui-library': '/Users/me/code/my-ui-library',
@@ -193,7 +193,7 @@ export function createKeyedDebouncer(delay: number): KeyedDebouncer {
 }
 
 /**
- * Vite plugin that watches symlinked package dist folders for changes.
+ * Vite plugin that watches linked package dist folders for changes.
  *
  * This plugin enables hot-reloading for npm-linked packages by:
  * 1. Adding dist folders to Vite's file watcher
@@ -210,11 +210,11 @@ export function createKeyedDebouncer(delay: number): KeyedDebouncer {
  * @example
  * ```typescript
  * // vite.config.ts
- * import { symlinkWatcher } from 'vite-plugin-symlink-watcher'
+ * import { viteWatcher } from 'nice-vite-watcher'
  *
  * export default {
  *   plugins: [
- *     symlinkWatcher({
+ *     viteWatcher({
  *       packages: {
  *         'my-ui-library': '/Users/me/code/my-ui-library',
  *         'my-utils': '/Users/me/code/my-utils',
@@ -225,19 +225,19 @@ export function createKeyedDebouncer(delay: number): KeyedDebouncer {
  * }
  * ```
  */
-export function symlinkWatcher(options: SymlinkWatcherOptions): Plugin {
+export function viteWatcher(options: ViteWatcherOptions): Plugin {
   const { packages, watchDir = "dist", verbose = false, debounce = 300 } = options
   const debouncer = createKeyedDebouncer(debounce)
 
   return {
-    name: "vite-plugin-symlink-watcher",
+    name: "nice-vite-watcher",
 
     configureServer(server) {
       registerWatchers(server, packages, watchDir)
 
       if (verbose) {
         const pkgNames = Object.keys(packages).join(", ")
-        console.log(`[symlink-watcher] Watching ${watchDir}/ in: ${pkgNames}`)
+        console.log(`[vite-watcher] Watching ${watchDir}/ in: ${pkgNames}`)
       }
 
       server.watcher.on("change", (filePath) => {
@@ -254,7 +254,7 @@ export function symlinkWatcher(options: SymlinkWatcherOptions): Plugin {
           if (verbose) {
             const files = fileCount === 1 ? "file" : "files"
             console.log(
-              `[symlink-watcher] ${pkg.name} changed (${fileCount} ${files}), invalidated ${invalidatedCount} modules`
+              `[vite-watcher] ${pkg.name} changed (${fileCount} ${files}), invalidated ${invalidatedCount} modules`
             )
           }
 
