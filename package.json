@@ -28,7 +28,7 @@
     "hmr",
     "hot-reload",
     "symlink",
-    "npm-link",
+    "toolkit",
     "linked-packages",
     "monorepo",
     "local-dependencies",
@@ -51,8 +51,7 @@
   "devDependencies": {
     "@types/node": "^24.10.1",
     "tsup": "^8.0.0",
-    "typescript": "^5.0.0",
+    "typescript": "^6.0.3",
     "vite": "^5.0.0"
-  },
-  "dependencies": {}
+  }
 }
