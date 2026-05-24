@@ -1,1 +1,0 @@
-[2026-05-24 06:50] patch: Remove forbidden `prepare` hook from package.json (Priority 1.5 normalization). The hook re-runs on every `file:` install in every consumer, cascading rebuilds. `prepublishOnly` covers publishing.
