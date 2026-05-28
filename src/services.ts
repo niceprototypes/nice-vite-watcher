@@ -240,7 +240,11 @@ export function viteWatcher(options: ViteWatcherOptions): Plugin {
         console.log(`[vite-watcher] Watching ${watchDir}/ in: ${pkgNames}`)
       }
 
-      server.watcher.on("change", (filePath) => {
+      // Listen on both `change` (incremental writes, e.g. tsc --watch) and
+      // `add` (post-clean-rebuild reappearance, e.g. npm run build's
+      // rm -rf dist && tsc). Without `add`, every full rebuild is invisible
+      // to Vite and the cached parse diverges from disk.
+      const onPackageFileEvent = (filePath: string) => {
         const pkg = getPackageForPath(filePath, packages, watchDir)
         if (!pkg) return
 
@@ -260,7 +264,10 @@ export function viteWatcher(options: ViteWatcherOptions): Plugin {
 
           server.ws.send({ type: "full-reload" })
         })
-      })
+      }
+
+      server.watcher.on("change", onPackageFileEvent)
+      server.watcher.on("add", onPackageFileEvent)
     },
   }
 }
